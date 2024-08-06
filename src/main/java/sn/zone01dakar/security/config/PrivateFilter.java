@@ -1,4 +1,4 @@
-package sn.zone01dakar.securite.config;
+package sn.zone01dakar.security.config;
 
 import java.io.IOException;
 
