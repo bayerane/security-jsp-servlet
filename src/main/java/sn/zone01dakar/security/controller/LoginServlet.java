@@ -1,6 +1,7 @@
 package sn.zone01dakar.security.controller;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,10 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sn.zone01dakar.security.dto.UserDto;
+import sn.zone01dakar.security.service.IUserService;
+import sn.zone01dakar.security.service.UserService;
+
 @WebServlet(name = "login", value = "/login")
 public class LoginServlet extends HttpServlet {
 	
 	private Logger log = LoggerFactory.getLogger(LoginServlet.class);
+	private IUserService userService = new UserService();
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		
@@ -34,7 +41,12 @@ public class LoginServlet extends HttpServlet {
 		
 		log.info("L'email envoyé est {}", email);
 		
-		req.getSession().setAttribute("username", email);
-		resp.sendRedirect("welcome");
+		Optional<UserDto> user = userService.login(email, pwd);
+		if(user.isPresent()) {	
+			req.getSession().setAttribute("username", email);
+			resp.sendRedirect("welcome");
+		}else {
+			resp.sendRedirect("login");
+		}
 	}
 }

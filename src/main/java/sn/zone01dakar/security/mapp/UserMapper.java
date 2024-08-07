@@ -15,7 +15,11 @@ public class UserMapper {
 				.collect(Collectors.toList());
 	}
 	
-	private static UserDto toUserDto(UserEntity user) {
-		return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
+	public static UserDto toUserDto(UserEntity user) {
+		return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+	}
+	
+	public static UserEntity toUserEntity(UserDto user) {
+		return new UserEntity(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
 	}
 }

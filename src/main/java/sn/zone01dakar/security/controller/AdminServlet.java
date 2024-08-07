@@ -23,11 +23,22 @@ public class AdminServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		req.setAttribute("usersList", userService.getAll());
+		
 		req.getRequestDispatcher("WEB-INF/jsp/users/list.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		String firstName = req.getParameter("firstName");
+		String lastName = req.getParameter("lastName");
+		String email = req.getParameter("email");
+		String password = req.getParameter("password");
+		
+		UserDto userDto = new UserDto(0, firstName, lastName, email, password);
+		
+		userService.save(userDto);
+		
+		doGet(req, resp);
 	}
 }
