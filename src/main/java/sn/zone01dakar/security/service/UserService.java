@@ -3,6 +3,10 @@ package sn.zone01dakar.security.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import sn.zone01dakar.security.controller.LoginServlet;
 import sn.zone01dakar.security.dao.UserDao;
 import sn.zone01dakar.security.dto.UserDto;
 import sn.zone01dakar.security.entity.UserEntity;
@@ -27,12 +31,15 @@ public class UserService implements IUserService {
 	@Override
 	public Optional<UserDto> login(String email, String password) {
 		
-		Optional<UserEntity> userEntity = userDao.login(email, password);
-		
-		if (userEntity.isPresent()) {
-			UserEntity user = userEntity.get();
-			return Optional.of(UserMapper.toUserDto(user));
-		}else {
+		try {		
+			Optional<UserEntity> userEntity = userDao.login(email, password);
+			if (userEntity.isPresent()) {
+				UserEntity user = userEntity.get();
+				return Optional.of(UserMapper.toUserDto(user));
+			}else {
+				return Optional.empty();
+			}
+		} catch (Exception e) {
 			return Optional.empty();
 		}
 	}

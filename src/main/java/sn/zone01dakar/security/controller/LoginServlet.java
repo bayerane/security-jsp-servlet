@@ -41,11 +41,16 @@ public class LoginServlet extends HttpServlet {
 		
 		log.info("L'email envoyé est {}", email);
 		
-		Optional<UserDto> user = userService.login(email, pwd);
-		if(user.isPresent()) {	
-			req.getSession().setAttribute("username", email);
-			resp.sendRedirect("welcome");
-		}else {
+		try {
+			Optional<UserDto> user = userService.login(email, pwd);
+			if(user.isPresent()) {
+				req.getSession().setAttribute("username", email);
+				resp.sendRedirect("welcome");	
+			}else {
+				resp.sendRedirect("login");
+			}
+		} catch (Exception e) {
+			log.error("error", e);
 			resp.sendRedirect("login");
 		}
 	}
