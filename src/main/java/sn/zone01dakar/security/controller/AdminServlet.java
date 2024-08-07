@@ -11,23 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import sn.zone01dakar.security.dto.UserDto;
+import sn.zone01dakar.security.service.IUserService;
+import sn.zone01dakar.security.service.UserService;
 
 @WebServlet(name = "admin", value = "/admin")
 public class AdminServlet extends HttpServlet {
 	
+	private IUserService userService = new UserService();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		List<UserDto> users = new ArrayList<UserDto>();
-		UserDto user1 = new UserDto(1, "Alassane", "DIOP", "dalassane@gmail.com");
-		UserDto user2 = new UserDto(2, "Baye Rane", "DIOP", "dbayerane@gmail.com");
-		UserDto user3 = new UserDto(3, "Michel", "KRuff", "mkruff@gmail.com");
-		
-		users.add(user1);
-		users.add(user2);
-		users.add(user3);
-		
-		req.setAttribute("usersList", users);
+		req.setAttribute("usersList", userService.getAll());
 		req.getRequestDispatcher("WEB-INF/jsp/users/list.jsp").forward(req, resp);
 	}
 	
